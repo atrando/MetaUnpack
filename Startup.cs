@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -34,6 +33,7 @@ namespace MetaUnpackProject
             {
                 Root getAddresses = JsonConvert.DeserializeObject<Root>(jsonRequest);
                 StringBuilder sbGetAddressessQuery = new StringBuilder("SELECT * FROM tb_evls_address");
+                StringBuilder getAddressResponse = new StringBuilder();
                 var countAddresses = getAddresses.GetAddresses.COUNT;
                 var country = getAddresses.GetAddresses.ADDRESS_COUNTRY;
                 var city = getAddresses.GetAddresses.ADDRESS_CITY;
@@ -61,17 +61,18 @@ namespace MetaUnpackProject
                 }
 
                 OpenConnection();
-                string result = "";
                 MySqlCommand cmdGetAddress = new MySqlCommand(sbGetAddressessQuery.ToString(), connection);
                 MySqlDataReader readerGetAddress = cmdGetAddress.ExecuteReader();
-             
-                while (readerGetAddress.Read())
+                
+                while (readerGetAddress.Read() && readerGetAddress.HasRows)
                 {
-                    result = readerGetAddress[0].ToString();
+                    GetAddressResponse responeObject = new GetAddressResponse(readerGetAddress);
+                    var respone = JsonConvert.SerializeObject(responeObject, Formatting.Indented);
+                    getAddressResponse.Append(respone.ToString());
                 }
 
                 connection.Close();
-                return result;
+                return getAddressResponse.ToString();
             }
             return "";
         }
