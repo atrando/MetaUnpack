@@ -2,7 +2,7 @@ using MySql.Data.MySqlClient;
 
 namespace MetaUnpackProject
 {
-    public class GetAddressResponse
+    public class ImportAddressesResponse
     {
         public string ADDRESS_REFERENCE_NR { get; set; }
         public string ADDRESS_TITLE { get; set; }
@@ -30,7 +30,7 @@ namespace MetaUnpackProject
         public string STATUS { get; set; }
         public string MESSAGE { get; set; }
 
-        public GetAddressResponse(MySqlDataReader reader)
+        public ImportAddressesResponse(MySqlDataReader reader)
         {
             ADDRESS_REFERENCE_NR = reader["ADDRESS_REFERENCE_NR"].ToString();
             ADDRESS_TITLE = reader["ADDRESS_TITLE"].ToString();
@@ -56,7 +56,7 @@ namespace MetaUnpackProject
             ADDRESS_COMPANY_NAME = reader["ADDRESS_COMPANY_NAME"].ToString();
             ADDRESS_COUNTRY = reader["ADDRESS_COUNTRY"].ToString();
             STATUS = "SUCCESS";
-            MESSAGE = "ADDRESS HAS BEEN DISPLAYED";
-        } 
+            MESSAGE = "ADDRESS SUCCESFULY IMPORTED";
+        }
     }
 }
